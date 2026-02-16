@@ -11,75 +11,186 @@ A practical observability + security telemetry project showing how to design:
 - Secure retention and access controls
 - Operational runbooks and troubleshooting steps
 
-This repo is intentionally documentation-heavy to mirror real SIEM engineering work.
+# Secure Infrastructure Observability  
+Log Collection • Aggregation • Retention • Operational Runbooks
+
+This project demonstrates how to design and document a secure logging and observability pipeline suitable for SIEM environments.
+
+Focus areas:
+
+- Log source inventory
+- Forwarder design
+- Aggregation strategy
+- Normalization and enrichment
+- Retention policy
+- Operational runbooks
+- Validation checklist
 
 ---
 
 ## Table of Contents
-- [What You’ll Build](#what-youll-build)
-- [Reference Architecture](#reference-architecture)
-- [Threat Model (Lite)](#threat-model-lite)
-- [Prerequisites](#prerequisites)
-- [Repo Structure](#repo-structure)
-- [Step 1 — Define Log Sources](#step-1--define-log-sources)
-- [Step 2 — Collection & Forwarding Design](#step-2--collection--forwarding-design)
-- [Step 3 — Normalization & Enrichment](#step-3--normalization--enrichment)
-- [Step 4 — Retention, Security, and Access](#step-4--retention-security-and-access)
-- [Step 5 — Operational Runbooks](#step-5--operational-runbooks)
-- [Step 6 — Validation Checklist](#step-6--validation-checklist)
-- [Troubleshooting](#troubleshooting)
-- [Resources](#resources)
-- [License](#license)
+
+- Overview
+- Architecture
+- Repository Structure
+- Step 1 – Define Log Sources
+- Step 2 – Collection Design
+- Step 3 – Normalization Strategy
+- Step 4 – Retention & Access Control
+- Step 5 – Operational Runbooks
+- Step 6 – Validation Checklist
+- Resources
+- License
 
 ---
 
-## What You’ll Build
-Deliverables suitable for interviews and portfolios:
-- Architecture diagram of an observability pipeline
-- Log source inventory + event taxonomy
-- Retention policy template and security controls
-- Runbooks for on-call troubleshooting
-- Validation checklist for go-live
+## Overview
+
+This repository is documentation-focused and mirrors real SIEM engineering work:
+
+- Architecture design
+- Logging pipeline modeling
+- Role-based access planning
+- Incident troubleshooting procedures
 
 ---
 
-## Reference Architecture
+## Architecture
 
-```mermaid
-flowchart TB
-  subgraph Sources
-    W[Windows Servers/Workstations]
-    L[Linux Servers]
-    N[Network Devices]
-    C[Cloud Logs]
-  end
+Sources → Forwarders → Aggregator → SIEM/Data Lake → Detections → Incident Response
 
-  subgraph Collection
-    F1[Forwarders/Collectors]
-    F2[Syslog/Agent]
-  end
+Sources include:
 
-  subgraph Aggregation
-    A[Aggregator<br/>Queue/Buffer/Transform]
-  end
+- Windows endpoints
+- Linux servers
+- Network devices
+- Cloud audit logs
 
-  subgraph Storage
-    S[(SIEM / Data Lake)]
-  end
+---
 
-  subgraph Consumers
-    D[Detections]
-    H[Hunters]
-    IR[Incident Response]
-    R[Reports]
-  end
+## Repository Structure
 
-  W --> F1 --> A --> S
-  L --> F2 --> A --> S
-  N --> F2 --> A --> S
-  C --> A --> S
+```
+Secure-Infrastructure-Observability/
+│
+├── docs/
+│   ├── architecture/
+│   ├── runbooks/
+│   ├── policies/
+│   └── inventories/
+│
+├── examples/
+│   ├── normalization-rules.md
+│   └── enrichment-strategy.md
+│
+└── README.md
+```
 
-  S --> D
-  S --> H
-  S --> IR
-  S --> R
+---
+
+## Step 1 – Define Log Sources
+
+Create inventory:
+
+| Source | Event Type | Owner | Collection Method |
+|--------|------------|-------|------------------|
+| Windows | Auth, Process | IT | Agent |
+| Linux | Syslog | IT | Syslog |
+| Network | Flow logs | NetOps | Export |
+| Cloud | Audit | CloudOps | API |
+
+---
+
+## Step 2 – Collection Design
+
+Document:
+
+- Forwarder placement
+- Buffering strategy
+- Failure handling
+- Service account permissions
+- Network considerations
+
+Store in:
+
+```
+docs/architecture/collection-design.md
+```
+
+---
+
+## Step 3 – Normalization Strategy
+
+Define common fields:
+
+- timestamp
+- host
+- user
+- action
+- source_ip
+- destination_ip
+
+Add enrichment:
+
+- Asset criticality
+- User role
+- Risk score
+
+---
+
+## Step 4 – Retention & Access Control
+
+Create policy documentation:
+
+- Hot / warm / cold retention tiers
+- Role-based access model
+- Audit logging for access
+- Least privilege enforcement
+
+---
+
+## Step 5 – Operational Runbooks
+
+Include runbooks for:
+
+- Collector down
+- Parsing failures
+- Time synchronization drift
+- Log volume spikes
+- Missing log source
+
+Each runbook should include:
+
+- Symptoms
+- Quick checks
+- Root cause
+- Resolution steps
+- Prevention guidance
+
+---
+
+## Step 6 – Validation Checklist
+
+Before production:
+
+- All critical log sources reporting
+- Time sync validated
+- Access controls enforced
+- Retention policy applied
+- Test detection fired successfully
+
+---
+
+## Resources
+
+- MITRE ATT&CK Data Sources
+- NIST Logging Guidelines
+- Cloud Audit Logging Documentation
+- SIEM Best Practices
+
+---
+
+## License
+
+MIT
+
